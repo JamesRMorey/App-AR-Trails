@@ -19,6 +19,7 @@ export default function AppStack() {
                 justifyContent: 'center',
                 alignItems: 'center',
             },
+            headerShown:false,
             tabBarLabelStyle: {
                 display: "none",
             },

@@ -2,10 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function TrailDetails() {
+export default function TrailDetails({ route, navigation }) {
+
   return (
     <View style={styles.container}>
-      <Text>Trail Detais Screen</Text>
+      <Text>{route.params.title}</Text>
       <StatusBar style="auto" />
     </View>
   );
