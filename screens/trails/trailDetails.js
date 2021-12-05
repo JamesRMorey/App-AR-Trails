@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import AppStack from './routes/appStack';
 
-export default function App() {
+export default function TrailDetails() {
   return (
-    <AppStack />
+    <View style={styles.container}>
+      <Text>Trail Detais Screen</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 

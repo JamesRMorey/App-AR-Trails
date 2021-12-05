@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import AppStack from './routes/appStack';
 
-export default function App() {
+export default function BadgeDetails() {
   return (
-    <AppStack />
+    <View style={styles.container}>
+      <Text>This is the BadgeDetails screen</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
