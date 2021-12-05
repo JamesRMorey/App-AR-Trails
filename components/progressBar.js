@@ -46,10 +46,10 @@ const Progress = ({ step, steps, height }) => {
     )
 }
 
-export default function ProgressBar( { step, steps }) {
+export default function ProgressBar( { step, steps, height }) {
   return (
     <View style={styles.container}>
-      <Progress step={step} steps={steps} height={10} />
+      <Progress step={step} steps={steps} height={height} />
     </View>
   );
 }

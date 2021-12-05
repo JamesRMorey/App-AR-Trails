@@ -9,15 +9,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 export default function TrailsIndex( { navigation } ) {
 
   const [trails, setTrails] = useState([
-    {key: 1, title: 'Globzia Park', location: 'Oxford Place Norwich', visitedLocations: 9, totalLocations: 10},
-    {key: 2, title: 'Zoobie Lust', location: 'Oxford Place Norwich', visitedLocations: 7, totalLocations: 8},
-    {key: 3, title: 'Penguin Polava', location: 'Twycross Zoo, Twycross', visitedLocations: 7, totalLocations: 15},
-    {key: 4, title: 'Twycross Tresspass', location: 'Twycross Zoo, Twycross', visitedLocations: 16, totalLocations: 50},
-    {key: 5, title: 'Potters Powers', location: 'Warick Castle, Warick', visitedLocations: 10, totalLocations: 20},
+    {key: 1, title: 'Globzia Park', location: 'Oxford Place Norwich', description:'but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum', visitedLocations: 9, totalLocations: 10},
+    {key: 2, title: 'Zoobie Lust', location: 'Oxford Place Norwich', description:'but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum', visitedLocations: 7, totalLocations: 8},
+    {key: 3, title: 'Penguin Polava', location: 'Twycross Zoo, Twycross', description:'but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum', visitedLocations: 7, totalLocations: 15},
+    {key: 4, title: 'Twycross Tresspass', location: 'Twycross Zoo, Twycross', description:'but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum', visitedLocations: 16, totalLocations: 50},
+    {key: 5, title: 'Potters Powers', location: 'Warick Castle, Warick', description:'but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum', visitedLocations: 10, totalLocations: 20},
   ]);
 
   const trailsOnPressHandler = (item) => {
-    navigation.navigate('Trail Details', item)
+    navigation.navigate('Trail Info', item)
   }
 
   const TrailItem = ({item}) => (
@@ -29,8 +29,8 @@ export default function TrailsIndex( { navigation } ) {
         <View style={{width: '70%', paddingLeft: 15}}>
           <Text style={styles.trailTitle}>{item.title}</Text>
           <Text style={styles.trailLocation}>{item.location}</Text>
-          <ProgressBar step={item.visitedLocations} steps={item.totalLocations}/>
-          <View style={styles.locationsVisitedContainer}>
+          <ProgressBar step={item.visitedLocations} steps={item.totalLocations} height={10}/>
+          <View style={globalStyles.locationsVisitedContainer}>
             <Text>
               <MaterialIcons name="not-listed-location" size={20} color={'#cd5242'}/>
             </Text>
@@ -91,11 +91,6 @@ const styles = StyleSheet.create({
   },
   trailTitle: {
     fontWeight: 'bold',
-  },
-  locationsVisitedContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   locationsVisited: {
     color: '#e29a90',

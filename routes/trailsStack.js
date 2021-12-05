@@ -9,7 +9,7 @@ export default function TrailsStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Trails" component={TrailsIndex} />
-      <Stack.Screen name="Trail Details" component={TrailDetails} />
+      <Stack.Screen name="Trail Info" component={TrailDetails} />
     </Stack.Navigator>
   );
 }
