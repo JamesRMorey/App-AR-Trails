@@ -2,11 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function BadgeDetails({ route, navigation }) {
+export default function Camera({ route, navigation }) {
   return (
     <View style={styles.container}>
-      <Text>This is the BadgeDetails screen</Text>
-      <StatusBar style="auto" />
+      <Text>Camera</Text>
     </View>
   );
 }

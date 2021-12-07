@@ -2,10 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react/cjs/react.development';
+import { colors } from '../stylesheets/colors';
 
 const Progress = ({ step, steps, height }) => {
-    const animatedValue = React.useRef(new Animated.Value(-1000)).current;
-    const reactive = React.useRef(new Animated.Value(-1000)).current;
+    const animatedValue = React.useRef(new Animated.Value(-500)).current;
+    const reactive = React.useRef(new Animated.Value(-500)).current;
     const [width, setWidth] = useState(0);
 
     React.useEffect(() => {
@@ -23,7 +24,7 @@ const Progress = ({ step, steps, height }) => {
     return (
         <View style={{
             height,
-            backgroundColor: '#D3D3D3',
+            backgroundColor: colors.lightGrey,
             borderRadius: height,
             overflow: 'hidden',
         }}>
@@ -35,7 +36,7 @@ const Progress = ({ step, steps, height }) => {
         style={{
             height,
             borderRadius: height,
-            backgroundColor: '#fa7002',
+            backgroundColor: colors.primary,
             width: '100%',
             position: 'absolute',
             transform: [{
