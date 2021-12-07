@@ -13,10 +13,16 @@ export const globalStyles = StyleSheet.create({
           backgroundColor: colors.primary,
           color: '#fff',
           borderRadius: 10,
-          paddingVertical: 5,
+          paddingVertical: 15,
           paddingHorizontal: 15,
           tintColor: '#fff',
           marginVertical: 15,
+          alignItems: 'center',
+      },
+      primaryButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
       },
       locationsVisitedContainer: {
         flexDirection: 'row',
@@ -35,4 +41,15 @@ export const globalStyles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 10,
       },
+      stackNavigationHeader: {
+        justifyContent: 'flex-end',
+        height: 130,
+      },
+      stackNavigationHeaderPress: {
+        padding: 20,
+        width: 80,
+      },
+      stackNavigationHeaderText: {
+        fontSize: 16,
+      }
 });
