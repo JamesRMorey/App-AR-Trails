@@ -8,13 +8,13 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons'; 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import RadioButtonRN from 'radio-buttons-react-native';
 
 
 export default function Login({ navigation }) {
 
   // DAATEPICKER SHIT
   const [darkMode, setDarkMode] = useState(false)
-
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
@@ -32,33 +32,45 @@ export default function Login({ navigation }) {
   };
 
   const handleConfirm = (date) => {
-    setDateOfBirth(date);
+    setData({
+      ...data,
+      dob: date
+    })
     if (date.getFullYear() < (new Date()).getFullYear()) {
-      setShowDatePickerCheck(true);
+      setDateOfBirthVerified(true);
     } else {
-      setShowDatePickerCheck(false);
+      setDateOfBirthVerified(false);
     }
     hideDatePicker();
   };
 
-  // FORM STATES
-  const [showEmailCheck, setShowEmailCheck] = useState(false);
-  const [showPasswordCheck, setShowPasswordCheck] = useState(false);
-  const [confirmedPassword, setConfirmedPassword] = useState('');
-  const [passwordCheckColor, setPasswordCheckColor] = useState(colors.grey);
-  const [showPostcodeCheck, setShowPostcodeCheck] = useState(false);
-  const [dateOfBirth, setDateOfBirth] = useState(new Date);
-  const [showDatePickerCheck, setShowDatePickerCheck] = useState(false);
+  // FORM VALIDITY CHECK
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [postCodeVerified, setPostCodeVerified] = useState(false);
+  const [dateOfBirthVerified, setDateOfBirthVerified] = useState(false);
+  const [passwordVerified, setPasswordVerified] = useState(false);
+  const [genderVerified, setGenderVerified] = useState(false);
 
+  const [passwordCheckColor, setPasswordCheckColor] = useState(colors.grey);
+  const [passwordSecureText, setPasswordSecureText] = useState(true);
+
+
+  const [confirmedPassword, setConfirmedPassword] = useState('');
+
+  //FORM DATA
   const [data, setData] = useState({
     email: '',
     password: '',
     postcode: '',
     gender: '',
-    dob: '',
-    check_textInputChange: false,
-    secureTextEntry: true
+    dob: new Date(),
   })
+
+  const genders = [
+    {label: 'Male'},
+    {label: 'Female'},
+    {label: 'Other'}     
+    ];
 
   const emailTextInputChange = (val) => {
     if (val.length > 0 && val.includes('@')) {
@@ -66,37 +78,57 @@ export default function Login({ navigation }) {
           ...data,
           email: val,
       });
-      setShowEmailCheck(true)
+      setEmailVerified(true)
     } else {
         setData({
           ...data,
           email: val,
       });
-      setShowEmailCheck(false)
+      setEmailVerified(false)
     }
   }
 
   const passwordTextInputChange = (val) => {
-      console.log("pass");
       setData({
         ...data,
         password: val
-      }, passwordsMatch());
-  }
+      });
+      if ((val == confirmedPassword) && val.length > 0) {
+        passwordsMatch(true);
+      } else {
+        passwordsMatch(false);
+      };
+  };
 
   const confirmedPasswordTextInputChange = (val) => {
     setConfirmedPassword(val, passwordsMatch());
+    if ((val == data.password) && val.length > 0) {
+      passwordsMatch(true);
+    } else {
+      passwordsMatch(false);
+    };
+  };
+
+  const checkVerified = () => {
+    console.log(emailVerified + ' ' + passwordVerified + ' ' + genderVerified + ' ' + dateOfBirthVerified + ' ' + postCodeVerified);
   }
 
-  const passwordsMatch = () => {
-    // console.log(data.password + ' ' + confirmedPassword);
-    if (data.password == confirmedPassword && data.password.length > 0) {
-      setShowPasswordCheck(true);
+  const passwordsMatch = (status) => {
+    if (status) {
       setPasswordCheckColor(colors.okgreen);
+      setPasswordVerified(true);
     } else {
-      setShowPasswordCheck(false);
       setPasswordCheckColor(colors.grey);
-    }
+      setPasswordVerified(false);
+    };
+  };
+
+  const genderOnSelect = (val) => {
+    setData({
+      ...data,
+      gender: val.label
+    });
+    setGenderVerified(true);
   }
 
   const postCodeTextInputChange = (val) => {
@@ -104,158 +136,153 @@ export default function Login({ navigation }) {
       ...data,
       postcode: val
     });
-    {val.length > 0 ? setShowPostcodeCheck(true) : setShowPostcodeCheck(false)}
+    {val.length > 0 ? setPostCodeVerified(true) : setPostCodeVerified(false)}
   }
 
   const updateSecureTextEntry = () => {
-    setData({
-      ...data,
-      secureTextEntry: !data.secureTextEntry
-    });
-    passwordsMatch();
+    setPasswordSecureText(!passwordSecureText);
   }
 
   return (
-    <View style={styles.container}>
-      {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} */}
-      <View style={globalStyles.stackNavigationHeader}>
-        <TouchableOpacity style={globalStyles.stackNavigationHeaderPress} onPress={() => navigation.navigate('Login')} >  
-          <Ionicons name="chevron-back-circle-outline" size={40} color="#fff" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.header}>
-        <Animatable.Text animation='fadeIn' style={styles.text_header}>Welcome To AR Trails!</Animatable.Text>
-      </View>
-      <Animatable.View 
-      animation='fadeInUpBig'
-      style={styles.footer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={[styles.text_footer, {marginTop: 50}]}>Create Your Account</Text>
+      <View style={styles.container}>
+        {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} */}
+        <View style={globalStyles.stackNavigationHeader}>
+          <TouchableOpacity style={globalStyles.stackNavigationHeaderPress} onPress={() => navigation.navigate('Login')} >  
+            <Ionicons name="chevron-back-circle-outline" size={40} color="#fff" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.header}>
+          <Animatable.Text animation='fadeIn' style={styles.text_header}>Welcome To AR Trails!</Animatable.Text>
+        </View>
+        <Animatable.View 
+        animation='fadeInUpBig'
+        style={styles.footer}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={[styles.text_footer, {marginTop: 40, fontWeight: 'bold'}]}>Create Your Account</Text>
 
-          {/* EMAIL FIELD */}
-          <Text style={[styles.text_footer, {marginTop: 35}]}>Email</Text>
-          <View style={styles.action}>
-            <AntDesign name="login" size={30} color="black" />
-            <TextInput 
-            keyboardType='email-address'
-            placeholder="Your Email"
-            autoCapitalize="none"
-            style={styles.textInput}
-            onChangeText={(val) => emailTextInputChange(val)}
-            />
-            {showEmailCheck ? 
-            <Animatable.View animation='bounceIn'>
-            <Feather name="check-circle" size={30} color={colors.okgreen} />
-            </Animatable.View>
-            : null}
-          </View>
-
-          {/* PASSWORD FIELD */}
-          <Text style={[styles.text_footer, {marginTop: 35}]}>Password</Text>
-          <View style={styles.action}>
-            <Feather name="lock" size={30} color="black" />
-            <TextInput 
-            placeholder="Password"
-            autoCapitalize="none"
-            secureTextEntry={data.secureTextEntry}
-            onChangeText={(val) => passwordTextInputChange(val)}
-            style={[styles.textInput]} />
-            <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
-              {data.secureTextEntry ?
-              <Feather name="eye-off" size={30} color={passwordCheckColor} />
-              :
-              <Feather name="eye" size={30} color={passwordCheckColor} />
-              }
-            </TouchableWithoutFeedback>
-          </View>
-
-          {/* CONFIRM PASSWORD FIELD */}
-          <Text style={[styles.text_footer, {marginTop: 35}]}>Confirm Password</Text>
-          <View style={styles.action}>
-            <Feather name="lock" size={30} color="black" />
-            <TextInput 
-            placeholder="Password"
-            autoCapitalize="none"
-            secureTextEntry={data.secureTextEntry}
-            onChangeText={(val) => confirmedPasswordTextInputChange(val)}
-            style={[styles.textInput]} />
-            <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
-              {data.secureTextEntry ?
-              <Feather name="eye-off" size={30} color={colors.grey} />
-              :
-              <Feather name="eye" size={30} color={colors.grey} />
-              }
-            </TouchableWithoutFeedback>
-          </View>
-
-          {/* DATE OF BIRTH FIELD */}
-          <Text style={[styles.text_footer, {marginTop: 35}]}>Date Of Birth</Text>
-          <TouchableOpacity onPress={showDatePicker}>
-            <View style={[styles.action, {alignItems: 'center'}]}>
-              <FontAwesome name="birthday-cake" size={30} color="black" />
-                <View style={{flex: 1}}>
-                  <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
-                    date={dateOfBirth}
-                    // display='inline'
-                    isDarkModeEnabled={darkMode}
-                  />
-                  <Text style={{marginLeft: 10}}>{dateOfBirth.getDate()} / {dateOfBirth.getMonth() + 1} / {dateOfBirth.getFullYear()}</Text>
-                </View>
-              {showDatePickerCheck ? 
+            {/* EMAIL FIELD */}
+            <Text style={[styles.text_footer, {marginTop: 35}]}>Email</Text>
+            <View style={styles.action}>
+              <AntDesign name="login" size={30} color="black" />
+              <TextInput 
+              keyboardType='email-address'
+              placeholder="Your Email"
+              autoCapitalize="none"
+              style={styles.textInput}
+              onChangeText={(val) => emailTextInputChange(val)}
+              />
+              {emailVerified ? 
               <Animatable.View animation='bounceIn'>
               <Feather name="check-circle" size={30} color={colors.okgreen} />
               </Animatable.View>
               : null}
             </View>
-          </TouchableOpacity>
 
-          {/* GENDER FIELD */}
-          <Text style={[styles.text_footer, {marginTop: 35}]}>Gender</Text>
-          <View style={styles.action}>
-            <Ionicons name="person-circle-outline" size={30} color="black" />
-            <TextInput 
-            placeholder="Your Email"
-            autoCapitalize="none"
-            style={styles.textInput}
-            onChangeText={(val) => emailTextInputChange(val)}
-            />
-            {data.check_textInputChange ? 
-            <Animatable.View animation='bounceIn'>
-            <Feather name="check-circle" size={30} color={colors.okgreen} />
-            </Animatable.View>
-            : null}
-          </View>
+            {/* DATE OF BIRTH FIELD */}
+            <Text style={[styles.text_footer, {marginTop: 35}]}>Date Of Birth</Text>
+            <TouchableOpacity onPress={showDatePicker}>
+              <View style={[styles.action, {alignItems: 'center'}]}>
+                <FontAwesome name="birthday-cake" size={30} color="black" />
+                  <View style={{flex: 1}}>
+                    <DateTimePickerModal
+                      isVisible={isDatePickerVisible}
+                      mode="date"
+                      onConfirm={handleConfirm}
+                      onCancel={hideDatePicker}
+                      date={data.dob}
+                      // display='inline'
+                      isDarkModeEnabled={darkMode}
+                    />
+                    <Text style={{marginLeft: 10}}>{data.dob.getDate()} / {data.dob.getMonth() + 1} / {data.dob.getFullYear()}</Text>
+                  </View>
+                {dateOfBirthVerified ? 
+                <Animatable.View animation='bounceIn'>
+                <Feather name="check-circle" size={30} color={colors.okgreen} />
+                </Animatable.View>
+                : null}
+              </View>
+            </TouchableOpacity>
 
-          {/* POSTCODE FIELD */}
-          <Text style={[styles.text_footer, {marginTop: 35}]}>Postcode</Text>
-          <View style={[styles.action, {marginBottom: 50}]}>
-            <Entypo name="address" size={30} color="black" />
-            <TextInput 
-            placeholder="Postcode"
-            autoCapitalize="characters"
-            style={styles.textInput}
-            onChangeText={(val) => postCodeTextInputChange(val)}
-            />
-            {showPostcodeCheck ? 
-            <Animatable.View animation='bounceIn'>
-            <Feather name="check-circle" size={30} color={colors.okgreen} />
-            </Animatable.View>
-            : null}
-          </View>
+            {/* GENDER FIELD */}
+            <Text style={[styles.text_footer, {marginTop: 35}]}>Gender</Text>
+            <View>
+              <RadioButtonRN
+                data={genders}
+                selectedBtn={(val) => genderOnSelect(val)}
+                style={{flex: 1, flexDirection: 'row'}}
+                boxStyle={{flex: 1, marginHorizontal: 5, paddingVertical: 20, borderRadius: 10}}
+                textStyle={{color: 'black'}}
+                circleSize={0}
+                activeColor={'#fff'}
+                boxActiveBgColor={colors.primary}
+              />
+            </View>
 
-          {/* REGISTER BUTTON */}
-          {(data.email.length > 0 && data.password.length > 0) ?
-          <TouchableOpacity style={[globalStyles.primaryButton, , {marginTop: 35, marginBottom: 100}]} onPress={() => navigation.navigate('Login')}>
-            <Text style={globalStyles.primaryButtonText}>Register</Text>
-          </TouchableOpacity>
-          : null }
-        </ScrollView>
-      </Animatable.View>
-    </View>
+            {/* POSTCODE FIELD */}
+            <Text style={[styles.text_footer, {marginTop: 30}]}>Postcode</Text>
+            <View style={[styles.action]}>
+              <Entypo name="address" size={30} color="black" />
+              <TextInput 
+              placeholder="Postcode"
+              autoCapitalize="characters"
+              style={styles.textInput}
+              onChangeText={(val) => postCodeTextInputChange(val)}
+              />
+              {postCodeVerified ? 
+              <Animatable.View animation='bounceIn'>
+              <Feather name="check-circle" size={30} color={colors.okgreen} />
+              </Animatable.View>
+              : null}
+            </View>
+
+            {/* PASSWORD FIELD */}
+            <Text style={[styles.text_footer, {marginTop: 35}]}>Password</Text>
+            <View style={styles.action}>
+              <Feather name="lock" size={30} color="black" />
+              <TextInput 
+              placeholder="Password"
+              autoCapitalize="none"
+              secureTextEntry={passwordSecureText}
+              onChangeText={(val) => passwordTextInputChange(val)}
+              style={[styles.textInput]} />
+              <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
+                {passwordSecureText ?
+                <Feather name="eye-off" size={30} color={passwordCheckColor} />
+                :
+                <Feather name="eye" size={30} color={passwordCheckColor} />
+                }
+              </TouchableWithoutFeedback>
+            </View>
+
+            {/* CONFIRM PASSWORD FIELD */}
+            <Text style={[styles.text_footer, {marginTop: 35}]}>Confirm Password</Text>
+            <View style={[styles.action, {marginBottom: 50}]}>
+              <Feather name="lock" size={30} color="black" />
+              <TextInput 
+              placeholder="Password"
+              autoCapitalize="none"
+              secureTextEntry={passwordSecureText}
+              onChangeText={(val) => confirmedPasswordTextInputChange(val)}
+              style={[styles.textInput]} />
+              <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
+                {passwordSecureText ?
+                <Feather name="eye-off" size={30} color={passwordCheckColor} />
+                :
+                <Feather name="eye" size={30} color={passwordCheckColor} />
+                }
+              </TouchableWithoutFeedback>
+            </View>
+
+            {/* REGISTER BUTTON */}
+            {(emailVerified && passwordVerified && dateOfBirthVerified && genderVerified && postCodeVerified) ?
+            <TouchableOpacity style={[globalStyles.primaryButton, , {marginTop: 35, marginBottom: 100}]} onPress={() => navigation.navigate('Login')}>
+              <Text style={globalStyles.primaryButtonText}>Register</Text>
+            </TouchableOpacity>
+            : null }
+          </ScrollView>
+        </Animatable.View>
+      </View>
+
   );
 }
 
@@ -271,10 +298,10 @@ const styles = StyleSheet.create({
       paddingBottom: 50,
   },
   footer: {
-      flex: 4,
+      flex: 5,
       backgroundColor: '#fff',
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
       paddingHorizontal: 20,
   },
   text_header: {
@@ -289,9 +316,10 @@ const styles = StyleSheet.create({
   action: {
       flexDirection: 'row',
       marginTop: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#f2f2f2',
-      paddingBottom: 5
+      borderWidth: 1,
+      borderColor: colors.lightGrey,
+      borderRadius: 10,
+      padding: 10,
   },
   actionError: {
       flexDirection: 'row',

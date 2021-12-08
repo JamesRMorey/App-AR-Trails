@@ -132,12 +132,13 @@ const styles = StyleSheet.create({
       fontSize: 18
   },
   action: {
-      flexDirection: 'row',
-      marginTop: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#f2f2f2',
-      paddingBottom: 5
-  },
+    flexDirection: 'row',
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: colors.lightGrey,
+    borderRadius: 10,
+    padding: 10,
+},
   actionError: {
       flexDirection: 'row',
       marginTop: 10,
