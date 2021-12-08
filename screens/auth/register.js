@@ -12,6 +12,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function Login({ navigation }) {
 
+  // DAATEPICKER SHIT
   const [darkMode, setDarkMode] = useState(false)
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -31,46 +32,87 @@ export default function Login({ navigation }) {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
+    setDateOfBirth(date);
+    if (date.getFullYear() < (new Date()).getFullYear()) {
+      setShowDatePickerCheck(true);
+    } else {
+      setShowDatePickerCheck(false);
+    }
     hideDatePicker();
   };
+
+  // FORM STATES
+  const [showEmailCheck, setShowEmailCheck] = useState(false);
+  const [showPasswordCheck, setShowPasswordCheck] = useState(false);
+  const [confirmedPassword, setConfirmedPassword] = useState('');
+  const [passwordCheckColor, setPasswordCheckColor] = useState(colors.grey);
+  const [showPostcodeCheck, setShowPostcodeCheck] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState(new Date);
+  const [showDatePickerCheck, setShowDatePickerCheck] = useState(false);
 
   const [data, setData] = useState({
     email: '',
     password: '',
+    postcode: '',
+    gender: '',
+    dob: '',
     check_textInputChange: false,
     secureTextEntry: true
   })
 
   const emailTextInputChange = (val) => {
     if (val.length > 0 && val.includes('@')) {
-      setData({
-        ...data,
-        email: val,
-        check_textInputChange: true,
-        
-    });
+        setData({
+          ...data,
+          email: val,
+      });
+      setShowEmailCheck(true)
     } else {
-      setData({
-        ...data,
-        email: val,
-        check_textInputChange: false,
-    });
+        setData({
+          ...data,
+          email: val,
+      });
+      setShowEmailCheck(false)
     }
   }
 
   const passwordTextInputChange = (val) => {
+      console.log("pass");
       setData({
         ...data,
         password: val
-      })
+      }, passwordsMatch());
+  }
+
+  const confirmedPasswordTextInputChange = (val) => {
+    setConfirmedPassword(val, passwordsMatch());
+  }
+
+  const passwordsMatch = () => {
+    // console.log(data.password + ' ' + confirmedPassword);
+    if (data.password == confirmedPassword && data.password.length > 0) {
+      setShowPasswordCheck(true);
+      setPasswordCheckColor(colors.okgreen);
+    } else {
+      setShowPasswordCheck(false);
+      setPasswordCheckColor(colors.grey);
+    }
+  }
+
+  const postCodeTextInputChange = (val) => {
+    setData({
+      ...data,
+      postcode: val
+    });
+    {val.length > 0 ? setShowPostcodeCheck(true) : setShowPostcodeCheck(false)}
   }
 
   const updateSecureTextEntry = () => {
     setData({
       ...data,
       secureTextEntry: !data.secureTextEntry
-    })
+    });
+    passwordsMatch();
   }
 
   return (
@@ -89,6 +131,7 @@ export default function Login({ navigation }) {
       style={styles.footer}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={[styles.text_footer, {marginTop: 50}]}>Create Your Account</Text>
+
           {/* EMAIL FIELD */}
           <Text style={[styles.text_footer, {marginTop: 35}]}>Email</Text>
           <View style={styles.action}>
@@ -100,12 +143,13 @@ export default function Login({ navigation }) {
             style={styles.textInput}
             onChangeText={(val) => emailTextInputChange(val)}
             />
-            {data.check_textInputChange ? 
+            {showEmailCheck ? 
             <Animatable.View animation='bounceIn'>
             <Feather name="check-circle" size={30} color={colors.okgreen} />
             </Animatable.View>
             : null}
           </View>
+
           {/* PASSWORD FIELD */}
           <Text style={[styles.text_footer, {marginTop: 35}]}>Password</Text>
           <View style={styles.action}>
@@ -118,12 +162,13 @@ export default function Login({ navigation }) {
             style={[styles.textInput]} />
             <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
               {data.secureTextEntry ?
-              <Feather name="eye-off" size={30} color={colors.grey} />
+              <Feather name="eye-off" size={30} color={passwordCheckColor} />
               :
-              <Feather name="eye" size={30} color={colors.grey} />
+              <Feather name="eye" size={30} color={passwordCheckColor} />
               }
             </TouchableWithoutFeedback>
           </View>
+
           {/* CONFIRM PASSWORD FIELD */}
           <Text style={[styles.text_footer, {marginTop: 35}]}>Confirm Password</Text>
           <View style={styles.action}>
@@ -132,7 +177,7 @@ export default function Login({ navigation }) {
             placeholder="Password"
             autoCapitalize="none"
             secureTextEntry={data.secureTextEntry}
-            onChangeText={(val) => passwordTextInputChange(val)}
+            onChangeText={(val) => confirmedPasswordTextInputChange(val)}
             style={[styles.textInput]} />
             <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
               {data.secureTextEntry ?
@@ -142,29 +187,32 @@ export default function Login({ navigation }) {
               }
             </TouchableWithoutFeedback>
           </View>
+
           {/* DATE OF BIRTH FIELD */}
           <Text style={[styles.text_footer, {marginTop: 35}]}>Date Of Birth</Text>
           <TouchableOpacity onPress={showDatePicker}>
-            <View style={styles.action}>
+            <View style={[styles.action, {alignItems: 'center'}]}>
               <FontAwesome name="birthday-cake" size={30} color="black" />
-                <View>
+                <View style={{flex: 1}}>
                   <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     mode="date"
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
-                    date={new Date()}
+                    date={dateOfBirth}
                     // display='inline'
                     isDarkModeEnabled={darkMode}
                   />
+                  <Text style={{marginLeft: 10}}>{dateOfBirth.getDate()} / {dateOfBirth.getMonth() + 1} / {dateOfBirth.getFullYear()}</Text>
                 </View>
-              {data.check_textInputChange ? 
+              {showDatePickerCheck ? 
               <Animatable.View animation='bounceIn'>
               <Feather name="check-circle" size={30} color={colors.okgreen} />
               </Animatable.View>
               : null}
             </View>
           </TouchableOpacity>
+
           {/* GENDER FIELD */}
           <Text style={[styles.text_footer, {marginTop: 35}]}>Gender</Text>
           <View style={styles.action}>
@@ -181,22 +229,24 @@ export default function Login({ navigation }) {
             </Animatable.View>
             : null}
           </View>
+
           {/* POSTCODE FIELD */}
           <Text style={[styles.text_footer, {marginTop: 35}]}>Postcode</Text>
           <View style={[styles.action, {marginBottom: 50}]}>
             <Entypo name="address" size={30} color="black" />
             <TextInput 
-            placeholder="Your Email"
-            autoCapitalize="none"
+            placeholder="Postcode"
+            autoCapitalize="characters"
             style={styles.textInput}
-            onChangeText={(val) => emailTextInputChange(val)}
+            onChangeText={(val) => postCodeTextInputChange(val)}
             />
-            {data.check_textInputChange ? 
+            {showPostcodeCheck ? 
             <Animatable.View animation='bounceIn'>
             <Feather name="check-circle" size={30} color={colors.okgreen} />
             </Animatable.View>
             : null}
           </View>
+
           {/* REGISTER BUTTON */}
           {(data.email.length > 0 && data.password.length > 0) ?
           <TouchableOpacity style={[globalStyles.primaryButton, , {marginTop: 35, marginBottom: 100}]} onPress={() => navigation.navigate('Login')}>
