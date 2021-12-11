@@ -6,6 +6,9 @@ import ProgressBar from '../../components/progressBar';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../stylesheets/colors';
+import { icons } from '../../stylesheets/icons';
+import { textStyles } from '../../stylesheets/typography';
+import { buttonStyles } from '../../stylesheets/buttons';
 
 export default function TrailDetails({ route, navigation }) {
 
@@ -14,36 +17,36 @@ export default function TrailDetails({ route, navigation }) {
       <View style={globalStyles.container}>
         <View style={styles.TrailHeaderContainer}>
           <Image source={require('../../assets/trails/badges/badge3.png')} style={{width: 200, height: 200}} resizeMode='contain' />
-          <Text style={styles.TrailTitle}>{route.params.title}</Text>   
+          <Text style={[textStyles.subTitletext, textStyles.bold, {color: colors.primary}]}>{route.params.title}</Text>   
         </View>
         <View style={[styles.trailInfoCard, globalStyles.card]}>
           <View style={styles.trailInfoDescription}>
-            <Text>{route.params.description}</Text>
+            <Text styles={textStyles.defaultText}>{route.params.description}</Text>
           </View>
-          <Text style={{fontWeight:'bold'}}>{route.params.location}</Text>
+          <Text style={[textStyles.defaultText, textStyles.bold]}>{route.params.location}</Text>
           <View style={[globalStyles.locationsVisitedContainer, {marginVertical: 10}]}>
-            <MaterialIcons name="not-listed-location" size={20} color={'#cd5242'}/>
-            <Text style={styles.locationsVisited}>{route.params.visitedLocations}/{route.params.totalLocations}</Text><Text style={styles.locationsVisitedtext}> locations visited</Text>
+            <MaterialIcons name="not-listed-location" size={icons.size} color={'#cd5242'}/>
+            <Text style={[textStyles.defaultText, textStyles.bold, {color: '#cd5242'}]}>{route.params.visitedLocations}/{route.params.totalLocations}</Text><Text style={[textStyles.defaultText ,styles.locationsVisitedtext]}> locations visited</Text>
           </View>
           {(() => {
             if ((route.params.totalLocations - route.params.visitedLocations) > 1) {
               return (
-                <Text style={{color: colors.primary, fontWeight: 'bold'}}>Just {route.params.totalLocations - route.params.visitedLocations} locations left to win this badge!</Text>
+                <Text style={[textStyles.defaultText,{color: colors.primary}]}>Just <Text style={textStyles.bold}>{route.params.totalLocations - route.params.visitedLocations}</Text> locations left to win this badge!</Text>
               )
             } else {
               return (
-              <Text style={{color: colors.primary}}>Just <Text style={{fontWeight: 'bold'}}>{route.params.totalLocations - route.params.visitedLocations}</Text> location left to win this badge!</Text>
+              <Text style={[textStyles.defaultText,{color: colors.primary}]}>Just <Text style={textStyles.bold}>{route.params.totalLocations - route.params.visitedLocations}</Text> location left to win this badge!</Text>
               )
             }
           })()}
-          <View style={{padding: 20, backgroundColor: colors.alertInfoBackground, width: '100%', marginTop: 15, justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
+          <View style={globalStyles.alertPrimary}>
             <TouchableOpacity>
-              <Text style={{color: colors.primary, fontWeight: 'bold', fontSize: 20}}>Keep it Up!</Text>
+              <Text style={[textStyles.alertPrimaryText]}>Keep it Up!</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{left: 0, marginVertical: 15, width: '100%' }}>
-          <Text style={{fontWeight: 'bold'}}>Your Progess</Text>
+        <View style={{marginVertical: 15, width: '100%'}}>
+          <Text style={[textStyles.defaultText, textStyles.bold]}>Your Progess</Text>
         </View>
         <View style={styles.trailProgressContainer}>
           <View style={styles.trailProgressbar}>
@@ -53,8 +56,8 @@ export default function TrailDetails({ route, navigation }) {
             <Text style={styles.trailProgressbarText}>{(route.params.visitedLocations/route.params.totalLocations * 100).toFixed(0)}%</Text>
           </View>
         </View>
-        <View style={[globalStyles.primaryButton, {width: '100%', marginBottom: 15}]}>
-          <TouchableOpacity style={{alignItems: 'center', padding: 15}}>
+        <View style={[buttonStyles.primaryButton, {width: '100%', marginBottom: 15}]}>
+          <TouchableOpacity style={{alignItems: 'center', padding: 10}}>
             <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 18}}>Begin {route.params.title}!</Text>
           </TouchableOpacity>
         </View>

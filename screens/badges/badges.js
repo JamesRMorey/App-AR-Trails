@@ -24,11 +24,11 @@ export default function BadgesIndex( { navigation } ) {
   const BadgeItem = ({item}) => (
     <TouchableOpacity style={{width: '50%', marginBottom: 15}} onPress={() => badgeOnPressHandler(item)}>
         <View style={{alignItems: 'center'}}>
-          <Image source={require('../../assets/trails/badges/badge3.png')}
-           style={{width: 150, height: 150}}
+          <Image source={require('../../assets/trails/badges/badge4.png')}
+           style={{width: 150, height: 200}}
            resizeMode="contain"
           />
-          <Text style={{color: colors.primary, fontSize: 15, fontWeight: 'bold'}}>{item.title}</Text>
+          {/* <Text style={{color: colors.primary, fontSize: 13, fontWeight: 'bold', position: 'absolute', bottom: 20, width: 120, textAlign: 'center'}}>{item.title}</Text> */}
         </View>
     </TouchableOpacity>
   )

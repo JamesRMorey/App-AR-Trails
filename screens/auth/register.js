@@ -9,7 +9,10 @@ import * as Animatable from 'react-native-animatable';
 import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons'; 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import RadioButtonRN from 'radio-buttons-react-native';
-
+import { formStyles } from '../../stylesheets/forms';
+import { icons } from '../../stylesheets/icons';
+import { textStyles } from '../../stylesheets/typography';
+import { buttonStyles } from '../../stylesheets/buttons';
 
 export default function Login({ navigation }) {
 
@@ -115,7 +118,7 @@ export default function Login({ navigation }) {
 
   const passwordsMatch = (status) => {
     if (status) {
-      setPasswordCheckColor(colors.okgreen);
+      setPasswordCheckColor(colors.success);
       setPasswordVerified(true);
     } else {
       setPasswordCheckColor(colors.grey);
@@ -147,42 +150,42 @@ export default function Login({ navigation }) {
       <View style={styles.container}>
         {/* <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} */}
         <View style={globalStyles.stackNavigationHeader}>
-          <TouchableOpacity style={globalStyles.stackNavigationHeaderPress} onPress={() => navigation.navigate('Login')} >  
-            <Ionicons name="chevron-back-circle-outline" size={40} color="#fff" />
+          <TouchableOpacity style={globalStyles.stackNavigationHeaderPress} onPress={() => navigation.goBack()} >  
+              <Ionicons name="chevron-back-circle-outline" size={40} color="#fff" />
           </TouchableOpacity>
         </View>
         <View style={styles.header}>
-          <Animatable.Text animation='fadeIn' style={styles.text_header}>Welcome To AR Trails!</Animatable.Text>
+          <Animatable.Text animation='fadeIn' style={[textStyles.headerText, textStyles.bold, textStyles.alt]}>Welcome To AR Trails!</Animatable.Text>
         </View>
         <Animatable.View 
-        animation='fadeInUpBig'
+        animation='slideInUp'
         style={styles.footer}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={[styles.text_footer, {marginTop: 40, fontWeight: 'bold'}]}>Create Your Account</Text>
+            <Text style={[textStyles.subTitletext, {marginTop: 40}]}>Create Your Account</Text>
 
             {/* EMAIL FIELD */}
-            <Text style={[styles.text_footer, {marginTop: 35}]}>Email</Text>
-            <View style={styles.action}>
-              <AntDesign name="login" size={30} color="black" />
+            <Text style={formStyles.fieldLabel}>Email</Text>
+            <View style={formStyles.fieldBox}>
+              <AntDesign name="login" size={icons.size} color={colors.grey} />
               <TextInput 
               keyboardType='email-address'
               placeholder="Your Email"
               autoCapitalize="none"
-              style={styles.textInput}
+              style={formStyles.textInput}
               onChangeText={(val) => emailTextInputChange(val)}
               />
               {emailVerified ? 
               <Animatable.View animation='bounceIn'>
-              <Feather name="check-circle" size={30} color={colors.okgreen} />
+              <Feather name="check-circle" size={icons.size} color={colors.success} />
               </Animatable.View>
               : null}
             </View>
 
             {/* DATE OF BIRTH FIELD */}
-            <Text style={[styles.text_footer, {marginTop: 35}]}>Date Of Birth</Text>
+            <Text style={formStyles.fieldLabel}>Date Of Birth</Text>
             <TouchableOpacity onPress={showDatePicker}>
-              <View style={[styles.action, {alignItems: 'center'}]}>
-                <FontAwesome name="birthday-cake" size={30} color="black" />
+              <View style={[formStyles.fieldBox, {alignItems: 'center'}]}>
+                <FontAwesome name="calendar" size={icons.size} color={colors.grey} />
                   <View style={{flex: 1}}>
                     <DateTimePickerModal
                       isVisible={isDatePickerVisible}
@@ -197,21 +200,21 @@ export default function Login({ navigation }) {
                   </View>
                 {dateOfBirthVerified ? 
                 <Animatable.View animation='bounceIn'>
-                <Feather name="check-circle" size={30} color={colors.okgreen} />
+                <Feather name="check-circle" size={icons.size} color={colors.success} />
                 </Animatable.View>
                 : null}
               </View>
             </TouchableOpacity>
 
             {/* GENDER FIELD */}
-            <Text style={[styles.text_footer, {marginTop: 35}]}>Gender</Text>
+            <Text style={formStyles.fieldLabel}>Gender</Text>
             <View>
               <RadioButtonRN
                 data={genders}
                 selectedBtn={(val) => genderOnSelect(val)}
                 style={{flex: 1, flexDirection: 'row'}}
                 boxStyle={{flex: 1, marginHorizontal: 5, paddingVertical: 20, borderRadius: 10}}
-                textStyle={{color: 'black'}}
+                textStyle={{color: 'black', fontWeight: 'bold'}}
                 circleSize={0}
                 activeColor={'#fff'}
                 boxActiveBgColor={colors.primary}
@@ -219,64 +222,64 @@ export default function Login({ navigation }) {
             </View>
 
             {/* POSTCODE FIELD */}
-            <Text style={[styles.text_footer, {marginTop: 30}]}>Postcode</Text>
-            <View style={[styles.action]}>
-              <Entypo name="address" size={30} color="black" />
+            <Text style={formStyles.fieldLabel}>Postcode</Text>
+            <View style={[formStyles.fieldBox]}>
+              <Feather name="map-pin" size={icons.size} color={colors.grey} />
               <TextInput 
               placeholder="Postcode"
               autoCapitalize="characters"
-              style={styles.textInput}
+              style={formStyles.textInput}
               onChangeText={(val) => postCodeTextInputChange(val)}
               />
               {postCodeVerified ? 
               <Animatable.View animation='bounceIn'>
-              <Feather name="check-circle" size={30} color={colors.okgreen} />
+              <Feather name="check-circle" size={icons.size} color={colors.success} />
               </Animatable.View>
               : null}
             </View>
 
             {/* PASSWORD FIELD */}
-            <Text style={[styles.text_footer, {marginTop: 35}]}>Password</Text>
-            <View style={styles.action}>
-              <Feather name="lock" size={30} color="black" />
+            <Text style={formStyles.fieldLabel}>Password</Text>
+            <View style={formStyles.fieldBox}>
+              <Feather name="lock" size={icons.size} color={colors.grey} />
               <TextInput 
               placeholder="Password"
               autoCapitalize="none"
               secureTextEntry={passwordSecureText}
               onChangeText={(val) => passwordTextInputChange(val)}
-              style={[styles.textInput]} />
+              style={formStyles.textInput} />
               <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
                 {passwordSecureText ?
-                <Feather name="eye-off" size={30} color={passwordCheckColor} />
+                <Feather name="eye-off" size={icons.size} color={passwordCheckColor} />
                 :
-                <Feather name="eye" size={30} color={passwordCheckColor} />
+                <Feather name="eye" size={icons.size} color={passwordCheckColor} />
                 }
               </TouchableWithoutFeedback>
             </View>
 
             {/* CONFIRM PASSWORD FIELD */}
-            <Text style={[styles.text_footer, {marginTop: 35}]}>Confirm Password</Text>
-            <View style={[styles.action, {marginBottom: 50}]}>
-              <Feather name="lock" size={30} color="black" />
+            <Text style={formStyles.fieldLabel}>Confirm Password</Text>
+            <View style={[formStyles.fieldBox, {marginBottom: 50}]}>
+              <Feather name="lock" size={icons.size} color={colors.grey} />
               <TextInput 
               placeholder="Password"
               autoCapitalize="none"
               secureTextEntry={passwordSecureText}
               onChangeText={(val) => confirmedPasswordTextInputChange(val)}
-              style={[styles.textInput]} />
+              style={formStyles.textInput} />
               <TouchableWithoutFeedback onPress={() => updateSecureTextEntry()}>
                 {passwordSecureText ?
-                <Feather name="eye-off" size={30} color={passwordCheckColor} />
+                <Feather name="eye-off" size={icons.size} color={passwordCheckColor} />
                 :
-                <Feather name="eye" size={30} color={passwordCheckColor} />
+                <Feather name="eye" size={icons.size} color={passwordCheckColor} />
                 }
               </TouchableWithoutFeedback>
             </View>
 
             {/* REGISTER BUTTON */}
             {(emailVerified && passwordVerified && dateOfBirthVerified && genderVerified && postCodeVerified) ?
-            <TouchableOpacity style={[globalStyles.primaryButton, , {marginTop: 35, marginBottom: 100}]} onPress={() => navigation.navigate('Login')}>
-              <Text style={globalStyles.primaryButtonText}>Register</Text>
+            <TouchableOpacity style={[buttonStyles.primaryButton, , {marginTop: 35, marginBottom: 100}]} onPress={() => navigation.navigate('Login')}>
+              <Text style={buttonStyles.primaryButtonText}>Register</Text>
             </TouchableOpacity>
             : null }
           </ScrollView>
@@ -298,59 +301,10 @@ const styles = StyleSheet.create({
       paddingBottom: 50,
   },
   footer: {
-      flex: 5,
+      flex: 9,
       backgroundColor: '#fff',
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
       paddingHorizontal: 20,
   },
-  text_header: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 30
-  },
-  text_footer: {
-      color: '#05375a',
-      fontSize: 18
-  },
-  action: {
-      flexDirection: 'row',
-      marginTop: 10,
-      borderWidth: 1,
-      borderColor: colors.lightGrey,
-      borderRadius: 10,
-      padding: 10,
-  },
-  actionError: {
-      flexDirection: 'row',
-      marginTop: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#FF0000',
-      paddingBottom: 5
-  },
-  textInput: {
-      flex: 1,
-      marginTop: Platform.OS === 'ios' ? 0 : -12,
-      paddingLeft: 10,
-      color: '#05375a',
-  },
-  errorMsg: {
-      color: '#FF0000',
-      fontSize: 14,
-  },
-  button: {
-      alignItems: 'center',
-      marginTop: 50
-  },
-  signIn: {
-      width: '100%',
-      height: 50,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 10
-  },
-  textSign: {
-      fontSize: 18,
-      fontWeight: 'bold'
-  }
 });

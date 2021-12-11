@@ -6,5 +6,6 @@ export const colors = ({
     lightGrey: '#D3D3D3',
     grey: '#A9A9A9',
     alertInfoBackground: '#fef7ec',
-    okgreen: '#00FF00',
+    success: '#00FF00',
+    error: 'red',
 });

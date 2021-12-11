@@ -9,21 +9,6 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 15,
       },
-      primaryButton: {
-          backgroundColor: colors.primary,
-          color: '#fff',
-          borderRadius: 10,
-          paddingVertical: 15,
-          paddingHorizontal: 15,
-          tintColor: '#fff',
-          marginVertical: 15,
-          alignItems: 'center',
-      },
-      primaryButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-      },
       locationsVisitedContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -51,5 +36,14 @@ export const globalStyles = StyleSheet.create({
       },
       stackNavigationHeaderText: {
         fontSize: 16,
+      },
+      alertPrimary: {
+        padding: 20,
+        backgroundColor: colors.alertInfoBackground,
+        width: '100%',
+        marginTop: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
       }
 });

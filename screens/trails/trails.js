@@ -6,6 +6,8 @@ import { globalStyles } from '../../stylesheets/global';
 import ProgressBar from '../../components/progressBar';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { colors } from '../../stylesheets/colors';
+import { icons } from '../../stylesheets/icons';
+import { textStyles } from '../../stylesheets/typography';
 
 export default function TrailsIndex( { navigation } ) {
 
@@ -25,17 +27,15 @@ export default function TrailsIndex( { navigation } ) {
     <TouchableOpacity onPress={() => trailsOnPressHandler(item)}>
       <View style={[styles.trailsItem, globalStyles.card]}>
         <View style={{ width: '30%' }}>
-          <Image source={require('../../assets/trails/badges/badge3.png')} style={styles.trailImage} resizeMode='center' />
+          <Image source={require('../../assets/trails/badges/badge3.png')} style={styles.trailImage} resizeMode='contain' />
         </View>
         <View style={{width: '70%', paddingLeft: 15}}>
-          <Text style={styles.trailTitle}>{item.title}</Text>
-          <Text style={styles.trailLocation}>{item.location}</Text>
+          <Text style={[textStyles.defaultText, textStyles.bold]}>{item.title}</Text>
+          <Text style={[textStyles.defaultText, textStyles.light]}>{item.location}</Text>
           <ProgressBar step={item.visitedLocations} steps={item.totalLocations} height={10}/>
           <View style={globalStyles.locationsVisitedContainer}>
-            <Text>
-              <MaterialIcons name="not-listed-location" size={20} color={'#cd5242'}/>
-            </Text>
-            <Text style={styles.locationsVisited}>{item.visitedLocations}/{item.totalLocations}</Text><Text style={styles.locationsVisitedtext}> locations visited</Text>
+            <MaterialIcons name="not-listed-location" size={icons.size} color={'#cd5242'}/>
+            <Text style={[textStyles.defaultText, textStyles.bold ,{color: '#cd5242'}]}>{item.visitedLocations}/{item.totalLocations}</Text><Text style={[textStyles.defaultText,styles.locationsVisitedtext]}> locations visited</Text>
           </View>
         </View>
       </View>
@@ -75,16 +75,6 @@ const styles = StyleSheet.create({
   trailImage: {
     width: '100%',
     height: '100%',
-  },
-  trailLocation: {
-    color: colors.grey
-  },
-  trailTitle: {
-    fontWeight: 'bold',
-  },
-  locationsVisited: {
-    color: '#e29a90',
-    fontWeight: 'bold',
   },
   locationsVisitedtext: {
     color: '#e29a90'

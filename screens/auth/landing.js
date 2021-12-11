@@ -5,25 +5,29 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from '../../stylesheets/colors';
 import { globalStyles } from '../../stylesheets/global';
 import * as Animatable from 'react-native-animatable';
+import { buttonStyles } from '../../stylesheets/buttons';
 
 export default function Landing({ navigation }) {
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
       <Animatable.Image 
       animation='bounceIn'
-      source={require('../../assets/trails/badges/badge3.png')}
+      source={require('../../assets/company/logo/AltonTowers2021Logo.png')}
        style={styles.logo}
         resizeMode='contain' />
       </View> 
       <Animatable.View  
       animation='fadeInUpBig'
       style={styles.footer}>
-        <Text style={styles.title}>Sign In / Create an Account to Get Hunting!</Text>
-        <Text style={styles.text}>Some text here</Text>
-        <TouchableOpacity style={globalStyles.primaryButton} onPress={() => navigation.navigate('Login')}>
-          <Text style={globalStyles.primaryButtonText}>Sign In</Text>
-        </TouchableOpacity>
+        <Text style={styles.title}>Lets Get Hunting!</Text>
+        <Text style={styles.text}>Sign in or create an account to get started</Text>
+        <View style={{marginTop: 20}}>
+          <TouchableOpacity style={buttonStyles.primaryButton} onPress={() => navigation.navigate('Login')}>
+            <Text style={buttonStyles.primaryButtonText}>Get Started</Text>
+          </TouchableOpacity>
+        </View>
       </Animatable.View> 
     </View>
   );
@@ -45,8 +49,6 @@ const styles = StyleSheet.create({
   footer: {
       flex: 2,
       backgroundColor: '#fff',
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
       paddingVertical: 50,
       paddingHorizontal: 30
   },
